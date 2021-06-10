@@ -106,7 +106,8 @@ summby <- function(DT, .x, bycols, f, bycols_excludena = NULL, ..., .w = NULL) {
 #' Allows simple weights, specified by `.w`. When weights are provided, the
 #' element count is the sum of weights in the group for a particular value.
 #'
-#'
+#' @import data.table
+#' @export
 countby <-  function(DT, .x, bycols,
                      .x_excludena = FALSE, bycols_excludena = FALSE,
                      wide = TRUE,
