@@ -44,7 +44,7 @@ summby <- function(DT, .x, bycols, f, bycols_excludena = NULL, ..., .w = NULL) {
 
 
 countby <- function(DT, .x, .x_excludena = FALSE, bycols,
-                    bycols_excludena = FALSE, .w = NULL, side_effects = TRUE) {
+                    bycols_excludena = FALSE, .w = NULL, side_effects = TRUE, na.rm = TRUE) {
   DTc <- DT
   if (!side_effects) DTc <- copy(DT)
 
@@ -52,9 +52,9 @@ countby <- function(DT, .x, .x_excludena = FALSE, bycols,
 
 
   if (is.null(.w)) {
-    f <- function(x) length(x)
+    f <- function(x) sum(x, na.rm = na.rm)
   } else {
-    f <- function(x, w) sum(x*w, na.rm = TRUE)
+    f <- function(x, w) sum(x*w, na.rm = na.rm)
   }
 
 
