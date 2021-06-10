@@ -1,0 +1,14 @@
+Package: dtsnippets
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Gustavo",
+           family = "Pereira",
+           role = c("aut", "cre"),
+           email = "gustavo.alt1@gmail.com")
+Description: Store a few useful snippets for data science tasks with `data.table`.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
