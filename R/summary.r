@@ -1,8 +1,11 @@
 #' Weighted summary  by category (internal function)
 .wsummby <- function(DT, .w, .x, bycols, bycols_excludena = NULL, f, ...) {
-  u <- data.table::as.data.table(.lunique(DT, bycols, bycols_excludena))
+  u <- data.table::as.data.table(
+                     do.call(expand.grid,
+                             .lunique(DT, bycols, bycols_excludena))
+                   )
 
-  dtsumm <- u[DT, on = bycols][, {
+  dtsumm <- DT[u, on = bycols][, {
     l <- lapply(.x, function(xn) .SD[, f(get(xn), get(.w), ...)])
     names(l) <- .x
     l
