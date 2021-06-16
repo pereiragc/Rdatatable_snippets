@@ -35,3 +35,35 @@
   return(intersect(vlist, vexclude))
 
 }
+
+
+#' Given a list of IDates, compute associated ages.
+#'
+#' @param vdate0 `IDate` vector
+#' @param date1 `IDate` vector of length one, or of the same length as `vdate0`
+#'
+#' @export
+#' @import data.table
+age_calc <- function(vdate0, date1 = as.Date(Sys.time())) {
+  y1 <- data.table::year(date1)
+  m1 <- data.table::month(date1)
+  d1 <- data.table::mday(date1)
+
+  y0 <- data.table::year(vdate0)
+  m0 <- data.table::month(vdate0)
+  d0 <- data.table::mday(vdate0)
+
+  idx0 <- m0 > m1
+  idx1 <- m1 == m0
+  idx2 <- d0 > d1
+
+
+  ret0 <- y1 - y0
+
+  ret0[!is.na(idx0) & idx0] <- ret0[!is.na(idx0) & idx0] - 1
+
+  ret0[!is.na(idx1) & !is.na(idx2) & idx1 & idx2] <-
+    ret0[!is.na(idx1) & !is.na(idx2) & idx1 & idx2] - 1
+
+  return(ret0)
+}
