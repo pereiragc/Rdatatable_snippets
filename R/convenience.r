@@ -69,7 +69,15 @@ age_calc <- function(vdate0, date1 = as.Date(Sys.time())) {
 }
 
 
-
+#' Create a maximal ID based on 2 id'ing schemes
+#'
+#' @param DT the data.table object
+#' @param c1 a string with the column name for the first id
+#' @param c2 a string with the column name for the second id
+#' @param exclude_na either a logical value or a subset of `z` values
+#'
+#' @export
+#' @import data.table
 union_ids <- function(DT, c1, c2, name_join, maxiter=50) {
   if (name_join %in% colnames(DT)) name_join <- paste0(name_join, "_new")
 
