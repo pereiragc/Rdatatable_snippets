@@ -3,4 +3,5 @@
 export(age_calc)
 export(countby)
 export(summby)
+export(union_ids)
 import(data.table)
