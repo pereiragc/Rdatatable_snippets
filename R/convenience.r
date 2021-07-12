@@ -67,3 +67,54 @@ age_calc <- function(vdate0, date1 = as.Date(Sys.time())) {
 
   return(ret0)
 }
+
+
+
+union_ids <- function(DT, c1, c2, name_join, maxiter=50) {
+  if (name_join %in% colnames(DT)) name_join <- paste0(name_join, "_new")
+
+  DT[!is.na(get(c1)), .c1 := .GRP, c1]
+  DT[!is.na(get(c2)), .c2 := .GRP, c2]
+
+  max1 <- DT[, max(.c1, na.rm = TRUE)]
+  max2 <- DT[, max(.c2, na.rm = TRUE)]
+
+  DT[is.na(.c1), .c1 := max1 + .I]
+  DT[is.na(.c2), .c2 := max2 + .I]
+
+  DT[, .join_sv := seq_len(.N)]
+  DT[!is.na(.c1), .join := min(.join_sv), .c1]
+
+  sep <- c(".c1" = ".c2",
+           ".c2" = ".c1")
+
+  i <- 1
+  x0 <- ".c2"
+
+  allsame <- DT[, all(.join == .join_sv)]
+
+  while (!allsame && i <= maxiter) {
+    DT[!is.na(get(x0)), .join := min(.join), x0]
+
+    allsame <- DT[, all(.join_sv == .join, na.rm = TRUE)]
+
+    DT[, .join_sv := .join][]
+
+    x0 <- sep[x0]
+
+    i <- i + 1
+  }
+
+
+  if (!allsame) {
+    warning(glue::glue("[union_ids] Could not join IDs after {i} iterations; consider chaing `maxiter` parameter"))
+  }
+
+  DT[is.na(get(c1)) & is.na(get(c2)), .join := NA]
+
+  DT[, c(".join_sv", ".c1", ".c2") := NULL]
+
+  setnames(DT, ".join",  name_join)
+
+  return(DT)
+}
